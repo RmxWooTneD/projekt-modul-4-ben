@@ -51,3 +51,14 @@ button:hover {
 .answer.incorrect {
   background-color: rgb(255, 0, 0);
 }
+
+.end-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 3.5rem;
+  text-align: center;
+  text-decoration: underline;
+  font-weight: bold;
+}
