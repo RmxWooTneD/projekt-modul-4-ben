@@ -5,22 +5,22 @@ const questions = [
     answers: [
       {
         answer: "Hanover",
-        anserId: "a",
+        answerId: "a",
         correct: false,
       },
       {
         answer: "Berlin",
-        anserId: "b",
+        answerId: "b",
         correct: true,
       },
       {
         answer: "Hamburg",
-        anserId: "c",
+        answerId: "c",
         correct: false,
       },
       {
         answer: "Dresden",
-        anserId: "d",
+        answerId: "d",
         correct: false,
       },
     ],
@@ -32,22 +32,22 @@ const questions = [
     answers: [
       {
         answer: "Blau",
-        anserId: "a",
+        answerId: "a",
         correct: false,
       },
       {
         answer: "Rot",
-        anserId: "b",
+        answerId: "b",
         correct: false,
       },
       {
         answer: "Gelb",
-        anserId: "c",
+        answerId: "c",
         correct: true,
       },
       {
         answer: "Grün",
-        anserId: "d",
+        answerId: "d",
         correct: false,
       },
     ],
@@ -59,22 +59,22 @@ const questions = [
     answers: [
       {
         answer: "Vier",
-        anserId: "a",
+        answerId: "a",
         correct: false,
       },
       {
         answer: "Eins",
-        anserId: "b",
+        answerId: "b",
         correct: false,
       },
       {
         answer: "Drei",
-        anserId: "c",
+        answerId: "c",
         correct: false,
       },
       {
         answer: "Zwei",
-        anserId: "d",
+        answerId: "d",
         correct: true,
       },
     ],
@@ -82,10 +82,8 @@ const questions = [
 ];
 
 //  Wie ändere ich die form ? es ist ein objekt?
-let newQuestion = questions[0];
-console.log(newQuestion);
+
 // ____________________________
-let newQuestionIndex = "";
 let questionIndex = 0;
 const quizHtmlEl = document.querySelector(".display-question");
 const quizTitle = document.querySelector(".question-title");
@@ -94,23 +92,25 @@ const quizAnswer2 = document.querySelector(".answer2");
 const quizAnswer3 = document.querySelector(".answer3");
 const quizAnswer4 = document.querySelector(".answer4");
 const AnswerEl = document.querySelector(".question-answers");
+let element = document.querySelector(".footer");
+let hidden = element.getAttribute("hidden");
+
+let newQuestion = questions[questionIndex];
+console.log(newQuestion);
 
 function nextQestion() {
-  renderQuiz();
-  if (questionIndex === 0) {
-    alert("Viel Spaß beim Quiz!");
-  } else if (questionIndex === 1) {
-    alert("Hier ist die zweite Frage!");
-  } else if (questionIndex === 2) {
-    alert("Hier ist die letzte Frage!");
+  if (hidden) {
+    element.removeAttribute("hidden");
   }
-  // Überprüfe, ob die letzte Frage erreicht wurde
-  else if (questionIndex === 3) {
-    alert(
-      "Das war die letzte Frage! Du hast das Quiz erfolgreich abgeschlossen!"
-    );
-    alert("Klicke auf 'Weiter' um das Quiz zu beenden.");
-    quizHtmlEl.innerHTML = `<div class="end-message">Quiz beendet! Vielen Dank fürs Mitmachen!</div>`;
+  if (questionIndex === 0) {
+    renderQuiz();
+    console.log(questionIndex);
+  } else if (questionIndex < questions.length - 1) {
+    renderQuiz();
+  } else if (questionIndex === questions.length - 1) {
+    renderQuiz();
+  } else {
+    quizHtmlEl.innerHTML = `<div class="end">Quiz beendet!</div>`;
   }
 }
 
@@ -147,62 +147,32 @@ function renderQuiz() {
 
 function showAnswer() {
   quizHtmlEl.querySelectorAll(".answer").forEach((el) => {
-    if (questionIndex === 0) {
-      if (el.id === "b") {
-        el.classList.add("correct");
-      } else {
-        el.classList.add("incorrect");
-      }
-    } else if (questionIndex === 1) {
-      if (el.id === "c") {
-        el.classList.add("correct");
-      } else {
-        el.classList.add("incorrect");
-      }
-    } else if (questionIndex === 2) {
-      if (el.id === "d") {
-        el.classList.add("correct");
-      } else {
-        el.classList.add("incorrect");
-      }
+    const question = questions[questionIndex];
+    const answer = question.answers.find((a) => a.answerId === el.id);
+    if (answer.correct) {
+      el.classList.add("correct");
+    } else {
+      el.classList.add("incorrect");
     }
   });
-  loadNextQuestion();
-}
-
-function loadNextQuestion() {
-  if (questionIndex === 0) {
-    questionIndex = ++questionIndex;
-    console.log(questionIndex);
-    newQuestion = questions[1];
-  } else if (questionIndex === 1) {
-    questionIndex = ++questionIndex;
-    console.log(questionIndex);
-    newQuestion = questions[2];
-  } else if (questionIndex === 2) {
-    questionIndex = ++questionIndex;
-    console.log(questionIndex);
-  }
+  questionIndex++;
+  console.log(questionIndex);
+  newQuestion = questions[questionIndex];
+  console.log(newQuestion);
 }
 
 function check() {
-  if (questionIndex === 0) {
-    document.getElementById("b").classList.add("correct");
-    document.getElementById("a").classList.add("incorrect");
-    document.getElementById("c").classList.add("incorrect");
-    document.getElementById("d").classList.add("incorrect");
-  } else if (questionIndex === 1) {
-    document.getElementById("a").classList.add("incorrect");
-    document.getElementById("b").classList.add("incorrect");
-    document.getElementById("c").classList.add("correct");
-    document.getElementById("d").classList.add("incorrect");
-  } else if (questionIndex === 2) {
-    document.getElementById("a").classList.add("incorrect");
-    document.getElementById("b").classList.add("incorrect");
-    document.getElementById("c").classList.add("incorrect");
-    document.getElementById("d").classList.add("correct");
-  }
-  loadNextQuestion();
+  quizHtmlEl.querySelectorAll(".answer").forEach((el) => {
+    const question = questions[questionIndex];
+    const answer = question.answers.find((a) => a.answerId === el.id);
+    if (answer.correct) {
+      el.classList.add("correct");
+    } else {
+      el.classList.add("incorrect");
+    }
+  });
+  questionIndex++;
+  console.log(questionIndex);
+  newQuestion = questions[questionIndex];
+  console.log(newQuestion);
 }
-
-// _________________________________________________________
